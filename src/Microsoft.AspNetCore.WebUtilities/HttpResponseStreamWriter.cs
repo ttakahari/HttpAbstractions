@@ -75,19 +75,24 @@ namespace Microsoft.AspNetCore.WebUtilities
                 throw new ArgumentNullException(nameof(charPool));
             }
 
+            if (bufferSize <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(bufferSize));
+            }
+
             _stream = stream;
             Encoding = encoding;
-            _charBufferSize = bufferSize;
 
             _encoder = encoding.GetEncoder();
             _bytePool = bytePool;
             _charPool = charPool;
 
             _charBuffer = charPool.Rent(bufferSize);
+            _charBufferSize = _charBuffer.Length;
 
             try
             {
-                var requiredLength = encoding.GetMaxByteCount(bufferSize);
+                var requiredLength = encoding.GetMaxByteCount(_charBufferSize);
                 _byteBuffer = bytePool.Rent(requiredLength);
             }
             catch

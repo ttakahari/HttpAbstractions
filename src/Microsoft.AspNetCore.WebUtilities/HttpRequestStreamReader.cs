@@ -82,17 +82,17 @@ namespace Microsoft.AspNetCore.WebUtilities
 
             _stream = stream;
             _encoding = encoding;
-            _byteBufferSize = bufferSize;
             _bytePool = bytePool;
             _charPool = charPool;
 
             _decoder = encoding.GetDecoder();
 
             _byteBuffer = _bytePool.Rent(bufferSize);
+            _byteBufferSize = _byteBuffer.Length;
 
             try
             {
-                var requiredLength = encoding.GetMaxCharCount(bufferSize);
+                var requiredLength = encoding.GetMaxCharCount(_byteBufferSize);
                 _charBuffer = _charPool.Rent(requiredLength);
             }
             catch
