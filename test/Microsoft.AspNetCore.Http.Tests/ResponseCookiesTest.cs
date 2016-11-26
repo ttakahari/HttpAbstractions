@@ -1,9 +1,7 @@
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Text;
 using Microsoft.AspNetCore.Http.Internal;
-using Microsoft.Extensions.ObjectPool;
 using Microsoft.Net.Http.Headers;
 using Xunit;
 
@@ -51,9 +49,6 @@ namespace Microsoft.AspNetCore.Http.Tests
                 // key, value, object pool, expected
                 return new TheoryData<string, string, string>
                 {
-                    { "key", "value", "key=value" },
-                    { "key,", "!value", "key%2C=%21value" },
-                    { "ke#y,", "val^ue", "ke%23y%2C=val%5Eue" },
                     { "key", "value", "key=value" },
                     { "key,", "!value", "key%2C=%21value" },
                     { "ke#y,", "val^ue", "ke%23y%2C=val%5Eue" },

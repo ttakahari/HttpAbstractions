@@ -1,7 +1,6 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using Xunit;
 
 namespace Microsoft.AspNetCore.WebUtilities
@@ -55,7 +54,6 @@ namespace Microsoft.AspNetCore.WebUtilities
         [InlineData("a_b_c_d", "a/b/c/d=")]
         [InlineData("a-b_c", "a+b/c===")]
         [InlineData("a-b_c-d", "a+b/c+d=")]
-        [InlineData("a-b_c", "a+b/c===")]
         [InlineData("abcd", "abcd")]
         public void DecodeToBase64String_ReturnsValid_Base64String(string text, string expectedValue)
         {

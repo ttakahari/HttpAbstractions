@@ -30,16 +30,26 @@ namespace Microsoft.Net.Http.Headers
                 var data = new TheoryData<DateTimeOffset, bool>();
 
                 var now = DateTimeOffset.Now;
-
                 foreach (var quoted in new[] { true, false })
                 {
-                    for (var i = 0; i < 60; i++)
+                    data.Add(now, quoted);
+                    for (var i = 1; i < 60; i++)
                     {
                         data.Add(now.AddSeconds(i), quoted);
                         data.Add(now.AddMinutes(i), quoted);
                         data.Add(now.AddDays(i), quoted);
-                        data.Add(now.AddMonths(i), quoted);
-                        data.Add(now.AddYears(i), quoted);
+
+                        // Adding up to 59 days covers adding 1 month (rarely 2).
+                        if (i > 1)
+                        {
+                            data.Add(now.AddMonths(i), quoted);
+                        }
+
+                        // Adding up to 59 months covers adding 1 to 4 years.
+                        if (i > 4)
+                        {
+                            data.Add(now.AddYears(i), quoted);
+                        }
                     }
                 }
 
