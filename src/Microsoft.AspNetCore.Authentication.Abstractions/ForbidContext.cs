@@ -7,16 +7,16 @@ using Microsoft.AspNetCore.Http;
 namespace Microsoft.AspNetCore.Authentication
 {
     /// <summary>
-    /// Context used for challenges.
+    /// Context used for Forbids.
     /// </summary>
-    public class ChallengeContext : BaseAuthenticationContext
+    public class ForbidContext : BaseAuthenticationContext
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="httpContext">The context.</param>
         /// <param name="authenticationScheme">The name of the scheme.</param>
-        public ChallengeContext(HttpContext httpContext, string authenticationScheme)
+        public ForbidContext(HttpContext httpContext, string authenticationScheme)
             : this(httpContext, authenticationScheme, properties: null)
         { }
 
@@ -26,7 +26,7 @@ namespace Microsoft.AspNetCore.Authentication
         /// <param name="httpContext">The context.</param>
         /// <param name="authenticationScheme">The name of the scheme.</param>
         /// <param name="properties">The properties.</param>
-        public ChallengeContext(HttpContext httpContext, string authenticationScheme, AuthenticationProperties properties)
+        public ForbidContext(HttpContext httpContext, string authenticationScheme, AuthenticationProperties properties)
             : base(httpContext, authenticationScheme, properties)
         {
             if (string.IsNullOrEmpty(authenticationScheme))

@@ -33,6 +33,13 @@ namespace Microsoft.AspNetCore.Authentication
         Task ChallengeAsync(ChallengeContext context);
 
         /// <summary>
+        /// Forbid behavior.
+        /// </summary>
+        /// <param name="context">The <see cref="ForbidContext"/> context.</param>
+        /// <returns>A task.</returns>
+        Task ForbidAsync(ForbidContext context);
+
+        /// <summary>
         /// Handle sign in.
         /// </summary>
         /// <param name="context">The <see cref="SignInContext"/> context.</param>

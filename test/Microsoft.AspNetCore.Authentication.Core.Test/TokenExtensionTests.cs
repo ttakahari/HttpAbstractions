@@ -171,6 +171,11 @@ namespace Microsoft.AspNetCore.Authentication
                 return Task.FromResult(0);
             }
 
+            public Task ForbidAsync(ForbidContext context)
+            {
+                return Task.FromResult(0);
+            }
+
             public Task InitializeAsync(AuthenticationScheme scheme, HttpContext context)
             {
                 return Task.FromResult(0);
