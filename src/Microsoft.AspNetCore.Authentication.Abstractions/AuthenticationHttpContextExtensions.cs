@@ -64,7 +64,7 @@ namespace Microsoft.AspNetCore.Authentication
         /// <param name="properties">The <see cref="AuthenticationProperties"/> properties.</param>
         /// <returns>The task.</returns>
         public static Task ChallengeAsync(this HttpContext context, string scheme, AuthenticationProperties properties) =>
-            context.ChallengeAsync(scheme, properties: properties);
+            context.RequestServices.GetRequiredService<IAuthenticationService>().ChallengeAsync(context, scheme, properties);
 
         /// <summary>
         /// Extension method for Forbid.
