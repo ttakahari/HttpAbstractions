@@ -99,8 +99,7 @@ namespace Microsoft.AspNetCore.Authentication
                 throw new InvalidOperationException($"No authentication handler is configured to handle the scheme: {scheme}");
             }
 
-            var challengeContext = new ChallengeContext(context, scheme, properties);
-            await handler.ChallengeAsync(challengeContext);
+            await handler.ChallengeAsync(properties);
         }
 
         /// <summary>
@@ -129,7 +128,7 @@ namespace Microsoft.AspNetCore.Authentication
                 throw new InvalidOperationException($"No authentication handler is configured to handle the scheme: {scheme}");
             }
 
-            await handler.ForbidAsync(new ForbidContext(context, scheme, properties));
+            await handler.ForbidAsync(properties);
         }
 
         /// <summary>
@@ -163,8 +162,7 @@ namespace Microsoft.AspNetCore.Authentication
                 throw new InvalidOperationException($"No authentication handler is configured to handle the scheme: {scheme}");
             }
 
-            var signInContext = new SignInContext(context, scheme, principal, properties);
-            await handler.SignInAsync(signInContext);
+            await handler.SignInAsync(principal, properties);
         }
 
         /// <summary>
@@ -187,8 +185,7 @@ namespace Microsoft.AspNetCore.Authentication
                 throw new InvalidOperationException($"No authentication handler is configured to handle the scheme: {scheme}");
             }
 
-            var signOutContext = new SignOutContext(context, scheme, properties);
-            await handler.SignOutAsync(signOutContext);
+            await handler.SignOutAsync(properties);
         }
     }
 }
