@@ -113,7 +113,6 @@ namespace Microsoft.AspNetCore.Authentication
         {
             if (scheme == null)
             {
-                // REVIEW: does it make sense to reuse the same default as challenge still?
                 var defaultChallengeScheme = await Schemes.GetDefaultChallengeSchemeAsync();
                 scheme = defaultChallengeScheme?.Name;
                 if (scheme == null)
