@@ -61,6 +61,24 @@ namespace Microsoft.AspNetCore.Authentication
         }
 
         [Fact]
+        public async Task DefaultSchemesFallbackToAuthenticateScheme()
+        {
+            var services = new ServiceCollection().AddOptions().AddAuthenticationCore(o =>
+            {
+                o.DefaultAuthenticateScheme = "B";
+                o.AddScheme<Handler>("A", "whatever");
+                o.AddScheme<Handler>("B", "whatever");
+            }).BuildServiceProvider();
+
+            var provider = services.GetRequiredService<IAuthenticationSchemeProvider>();
+            Assert.Equal("B", (await provider.GetDefaultForbidSchemeAsync()).Name);
+            Assert.Equal("B", (await provider.GetDefaultAuthenticateSchemeAsync()).Name);
+            Assert.Equal("B", (await provider.GetDefaultChallengeSchemeAsync()).Name);
+            Assert.Equal("B", (await provider.GetDefaultSignInSchemeAsync()).Name);
+            Assert.Equal("B", (await provider.GetDefaultSignOutSchemeAsync()).Name);
+        }
+
+        [Fact]
         public async Task DefaultSchemesAreSet()
         {
             var services = new ServiceCollection().AddOptions().AddAuthenticationCore(o =>
