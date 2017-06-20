@@ -5,6 +5,7 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Net.Http.Headers;
 
 namespace Microsoft.AspNetCore.Authentication
 {
@@ -89,14 +90,17 @@ namespace Microsoft.AspNetCore.Authentication
                 scheme = defaultChallengeScheme?.Name;
                 if (scheme == null)
                 {
-                    throw new InvalidOperationException($"No authenticationScheme was specified, and there was no DefaultChallengeScheme found.");
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return;
                 }
             }
 
             var handler = await Handlers.GetHandlerAsync(context, scheme);
             if (handler == null)
             {
-                throw new InvalidOperationException($"No authentication handler is configured to handle the scheme: {scheme}");
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                context.Response.Headers[HeaderNames.WWWAuthenticate] = scheme;
+                return;
             }
 
             await handler.ChallengeAsync(properties);
@@ -117,7 +121,8 @@ namespace Microsoft.AspNetCore.Authentication
                 scheme = defaultChallengeScheme?.Name;
                 if (scheme == null)
                 {
-                    throw new InvalidOperationException($"No authenticationScheme was specified, and there was no DefaultChallengeScheme found.");
+                    context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                    return;
                 }
             }
 
