@@ -86,6 +86,7 @@ namespace Microsoft.AspNetCore.Http.Features
             }
         }
 
+        [Obsolete("This is obsolete and will be removed in a future version. The recommended alternative is to use Microsoft.AspNetCore.Http.Features.FormFeature.ReadFormAsync(). See TODO")]
         public IFormCollection ReadForm()
         {
             if (Form != null)

@@ -103,7 +103,9 @@ namespace Microsoft.AspNetCore.Http.Features
             IFormFeature formFeature = new FormFeature(context.Request, new FormOptions() { BufferBody = bufferRequest });
             context.Features.Set<IFormFeature>(formFeature);
 
+#pragma warning disable CS0618 // Type or member is obsolete
             var formCollection = context.Request.Form;
+#pragma warning restore CS0618 // Type or member is obsolete
 
             Assert.NotNull(formCollection);
 
@@ -138,7 +140,9 @@ namespace Microsoft.AspNetCore.Http.Features
             IFormFeature formFeature = new FormFeature(context.Request, new FormOptions() { BufferBody = bufferRequest });
             context.Features.Set<IFormFeature>(formFeature);
 
+#pragma warning disable CS0618 // Type or member is obsolete
             var formCollection = context.Request.Form;
+#pragma warning restore CS0618 // Type or member is obsolete
 
             Assert.NotNull(formCollection);
 
@@ -184,7 +188,9 @@ namespace Microsoft.AspNetCore.Http.Features
             Assert.NotNull(formFeature);
             Assert.NotNull(formFeature.Form);
             Assert.Same(formFeature.Form, formCollection);
+#pragma warning disable CS0618 // Type or member is obsolete
             Assert.Same(formCollection, context.Request.Form);
+#pragma warning restore CS0618 // Type or member is obsolete
 
             // Content
             Assert.Equal(0, formCollection.Count);
@@ -232,7 +238,9 @@ namespace Microsoft.AspNetCore.Http.Features
             Assert.NotNull(formFeature);
             Assert.NotNull(formFeature.Form);
             Assert.Same(formFeature.Form, formCollection);
+#pragma warning disable CS0618 // Type or member is obsolete
             Assert.Same(formCollection, context.Request.Form);
+#pragma warning restore CS0618 // Type or member is obsolete
 
             // Content
             Assert.Equal(0, formCollection.Count);
@@ -280,7 +288,9 @@ namespace Microsoft.AspNetCore.Http.Features
             Assert.NotNull(formFeature);
             Assert.NotNull(formFeature.Form);
             Assert.Same(formFeature.Form, formCollection);
+#pragma warning disable CS0618 // Type or member is obsolete
             Assert.Same(formCollection, context.Request.Form);
+#pragma warning restore CS0618 // Type or member is obsolete
 
             // Content
             Assert.Equal(1, formCollection.Count);
@@ -382,7 +392,9 @@ namespace Microsoft.AspNetCore.Http.Features
             Assert.NotNull(formFeature);
             Assert.NotNull(formFeature.Form);
             Assert.Same(formFeature.Form, formCollection);
+#pragma warning disable CS0618 // Type or member is obsolete
             Assert.Same(formCollection, context.Request.Form);
+#pragma warning restore CS0618 // Type or member is obsolete
 
             // Content
             Assert.Equal(1, formCollection.Count);

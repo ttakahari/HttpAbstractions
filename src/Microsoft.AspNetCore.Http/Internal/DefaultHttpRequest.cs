@@ -140,6 +140,7 @@ namespace Microsoft.AspNetCore.Http.Internal
             get { return FormFeature.HasFormContentType; }
         }
 
+        [Obsolete("This is obsolete and will be removed in a future version. The recommended alternative is to use Microsoft.AspNetCore.Http.Internal.DefaultHttpRequest.ReadFormAsync(). See TODO")]
         public override IFormCollection Form
         {
             get { return FormFeature.ReadForm(); }
