@@ -48,7 +48,7 @@ namespace Microsoft.Net.Http.Headers
 
         public StringSegment Value
         {
-            get { return _value; }
+            get { return HeaderUtilities.RemoveQuotes(_value); }
             set
             {
                 HeaderUtilities.ThrowIfReadOnly(IsReadOnly);
