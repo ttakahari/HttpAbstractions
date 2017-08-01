@@ -195,7 +195,8 @@ namespace Microsoft.Net.Http.Headers
             if (current < headerValue.Length && headerValue[current] == '=')
             {
                 current++; // skip '='
-                current += NameValueHeaderValue.GetValueLength(headerValue, current);
+                bool ignore;
+                current += NameValueHeaderValue.GetValueLength(headerValue, current, out ignore);
             }
 
             // Find the next delimiter

@@ -36,9 +36,6 @@ namespace Microsoft.Net.Http.Headers
         public NameValueHeaderValue(StringSegment name, StringSegment value)
         {
             CheckNameValueFormat(name, value);
-
-            _name = name;
-            _value = value;
         }
 
         public StringSegment Name
@@ -52,8 +49,7 @@ namespace Microsoft.Net.Http.Headers
             set
             {
                 HeaderUtilities.ThrowIfReadOnly(IsReadOnly);
-                CheckValueFormat(value);
-                _value = value;
+                _value = CheckAndUpdateValueFormat(value); ;
             }
         }
 
@@ -280,13 +276,21 @@ namespace Microsoft.Net.Http.Headers
             current = current + HttpRuleParser.GetWhitespaceLength(input, current);
 
             // Parse the value, i.e. <value> in name/value string "<name>=<value>"
-            int valueLength = GetValueLength(input, current);
+            var addQuotes = false;
+            int valueLength = GetValueLength(input, current, out addQuotes);
 
             // Value after the '=' may be empty
             // Use parameterless ctor to avoid double-parsing of name and value, i.e. skip public ctor validation.
             parsedValue = new NameValueHeaderValue();
             parsedValue._name = name;
-            parsedValue._value = input.Subsegment(current, valueLength);
+            if (addQuotes)
+            {
+                parsedValue._value = $"\"{input.Subsegment(current, valueLength)}\"";
+            }
+            else
+            {
+                parsedValue._value = input.Subsegment(current, valueLength);
+            }
             current = current + valueLength;
             current = current + HttpRuleParser.GetWhitespaceLength(input, current); // skip whitespaces
             return current - startIndex;
@@ -356,9 +360,10 @@ namespace Microsoft.Net.Http.Headers
             return null;
         }
 
-        internal static int GetValueLength(StringSegment input, int startIndex)
+        internal static int GetValueLength(StringSegment input, int startIndex, out bool addQuotes)
         {
             Contract.Requires(input != null);
+            addQuotes = false;
 
             if (startIndex >= input.Length)
             {
@@ -366,32 +371,48 @@ namespace Microsoft.Net.Http.Headers
             }
 
             var valueLength = HttpRuleParser.GetTokenLength(input, startIndex);
-
-            if (valueLength == 0)
+            if (valueLength != 0)
             {
-                // A value can either be a token or a quoted string. Check if it is a quoted string.
-                if (HttpRuleParser.GetQuotedStringLength(input, startIndex, out valueLength) != HttpParseResult.Parsed)
-                {
-                    // We have an invalid value. Reset the name and return.
-                    return 0;
-                }
+                return valueLength;
             }
-            return valueLength;
+
+                // A value can either be a token or a quoted string. Check if it is a quoted string.
+            if (HttpRuleParser.GetQuotedStringLength(input, startIndex, out valueLength) == HttpParseResult.Parsed)
+            {
+                // We have an invalid value. Reset the name and return.
+                return valueLength;
+            }
+
+            // Add quotes and see if it works
+            var quotedStringSegment = $"\"{input}\"";
+            if (HttpRuleParser.GetQuotedStringLength(quotedStringSegment, startIndex, out valueLength) == HttpParseResult.Parsed)
+            {
+                addQuotes = true;
+                return valueLength - 2;
+            }
+            return 0;
         }
 
-        private static void CheckNameValueFormat(StringSegment name, StringSegment value)
+        private void CheckNameValueFormat(StringSegment name, StringSegment value)
         {
             HeaderUtilities.CheckValidToken(name, nameof(name));
-            CheckValueFormat(value);
+            _value = CheckAndUpdateValueFormat(value);
+            _name = name;
         }
 
-        private static void CheckValueFormat(StringSegment value)
+        private StringSegment CheckAndUpdateValueFormat(StringSegment value)
         {
             // Either value is null/empty or a valid token/quoted string
-            if (!(StringSegment.IsNullOrEmpty(value) || (GetValueLength(value, 0) == value.Length)))
+            bool addQuotes = false;
+            if (!(StringSegment.IsNullOrEmpty(value) || (GetValueLength(value, 0, out addQuotes) == value.Length)))
             {
                 throw new FormatException(string.Format(System.Globalization.CultureInfo.InvariantCulture, "The header value is invalid: '{0}'", value));
             }
+            if (addQuotes)
+            {
+                return $"\"{value}\"";
+            }
+            return value;
         }
 
         private static NameValueHeaderValue CreateNameValue()
