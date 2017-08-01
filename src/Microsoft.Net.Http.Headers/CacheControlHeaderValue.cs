@@ -549,17 +549,17 @@ namespace Microsoft.Net.Http.Headers
                 return true;
             }
 
-            // We need the string to be at least 3 chars long: 2x quotes and at least 1 character. Also make sure we
-            // have a quoted string. Note that NameValueHeaderValue will never have leading/trailing whitespaces.
+            // We need the string to be at least 3 chars long: 2x quotes and at least 1 character.
+            // Note that NameValueHeaderValue will never have leading/trailing whitespaces.
             var valueString = nameValue.Value;
-            if ((valueString.Length < 3) || (valueString[0] != '\"') || (valueString[valueString.Length - 1] != '\"'))
+            if (valueString.Length < 1)
             {
                 return false;
             }
 
             // We have a quoted string. Now verify that the string contains a list of valid tokens separated by ','.
-            var current = 1; // skip the initial '"' character.
-            var maxLength = valueString.Length - 1; // -1 because we don't want to parse the final '"'.
+            var current = 0; // skip the initial '"' character.
+            var maxLength = valueString.Length; // -1 because we don't want to parse the final '"'.
             var separatorFound = false;
             var originalValueCount = destination == null ? 0 : destination.Count;
             while (current < maxLength)

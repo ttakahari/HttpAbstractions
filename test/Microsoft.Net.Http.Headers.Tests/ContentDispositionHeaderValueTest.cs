@@ -243,7 +243,7 @@ namespace Microsoft.Net.Http.Headers
             Assert.Equal(newDate, contentDisposition.CreationDate);
             Assert.Equal(1, contentDisposition.Parameters.Count);
             Assert.Equal("Creation-DATE", contentDisposition.Parameters.First().Name);
-            Assert.Equal("\"Tue, 15 Nov 1994 08:12:32 GMT\"", contentDisposition.Parameters.First().Value);
+            Assert.Equal("Tue, 15 Nov 1994 08:12:32 GMT", contentDisposition.Parameters.First().Value);
 
             contentDisposition.Parameters.Remove(dateParameter);
             Assert.Null(contentDisposition.CreationDate);

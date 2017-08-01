@@ -44,7 +44,6 @@ namespace Microsoft.Net.Http.Headers
             AssertFormatException("text", " token ");
             AssertFormatException("text", "token ");
             AssertFormatException("text", " token");
-            AssertFormatException("text", "token string");
             AssertFormatException("text", "\"quoted string with \" quotes\"");
             AssertFormatException("text", "\"quoted string with \"two\" quotes\"");
         }
@@ -55,7 +54,7 @@ namespace Microsoft.Net.Http.Headers
             CheckValue(null);
             CheckValue(string.Empty);
             CheckValue("token_string");
-            CheckValue("\"quoted string\"");
+            CheckValue("unquoted string");
             CheckValue("\"quoted string with quoted \\\" quote-pair\"");
         }
 
@@ -148,7 +147,7 @@ namespace Microsoft.Net.Http.Headers
         {
             // Just verify that the setter calls the same validation the ctor invokes.
             Assert.Throws<FormatException>(() => { var x = new NameValueHeaderValue("name"); x.Value = " x "; });
-            Assert.Throws<FormatException>(() => { var x = new NameValueHeaderValue("name"); x.Value = "x y"; });
+            Assert.Throws<FormatException>(() => { var x = new NameValueHeaderValue("name"); x.Value = " x y "; });
         }
 
         [Fact]

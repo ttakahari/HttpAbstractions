@@ -200,10 +200,10 @@ namespace Microsoft.Net.Http.Headers
                     destination.Append(' ');
                 }
                 destination.Append(values[i].Name);
-                if (!StringSegment.IsNullOrEmpty(values[i].Value))
+                if (!StringSegment.IsNullOrEmpty(values[i]._value))
                 {
                     destination.Append('=');
-                    destination.Append(values[i].Value);
+                    destination.Append(values[i]._value);
                 }
             }
         }

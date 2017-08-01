@@ -443,11 +443,9 @@ namespace Microsoft.Net.Http.Headers
         [InlineData("proxy-revalidate=")]
         // Token with optional field-name list
         [InlineData("no-cache=")]
-        [InlineData("no-cache=token")]
         [InlineData("no-cache=\"token")]
         [InlineData("no-cache=\"\"")] // at least one token expected as value
         [InlineData("private=")]
-        [InlineData("private=token")]
         [InlineData("private=\"token")]
         [InlineData("private=\",\"")] // at least one token expected as value
         [InlineData("private=\"=\"")]
@@ -455,21 +453,17 @@ namespace Microsoft.Net.Http.Headers
         [InlineData("max-age")]
         [InlineData("max-age=")]
         [InlineData("max-age=a")]
-        [InlineData("max-age=\"1\"")]
         [InlineData("max-age=1.5")]
         [InlineData("max-stale=")]
         [InlineData("max-stale=a")]
-        [InlineData("max-stale=\"1\"")]
         [InlineData("max-stale=1.5")]
         [InlineData("min-fresh")]
         [InlineData("min-fresh=")]
         [InlineData("min-fresh=a")]
-        [InlineData("min-fresh=\"1\"")]
         [InlineData("min-fresh=1.5")]
         [InlineData("s-maxage")]
         [InlineData("s-maxage=")]
         [InlineData("s-maxage=a")]
-        [InlineData("s-maxage=\"1\"")]
         [InlineData("s-maxage=1.5")]
         // Invalid Extension values
         [InlineData("custom value")]
