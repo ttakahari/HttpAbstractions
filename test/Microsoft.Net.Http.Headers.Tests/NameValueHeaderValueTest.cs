@@ -37,25 +37,27 @@ namespace Microsoft.Net.Http.Headers
             Assert.Equal("text", nameValue.Name);
         }
 
-        [Fact]
-        public void Ctor_ValueInvalidFormat_ThrowFormatException()
+        [Theory]
+        [InlineData(" token ")]
+        [InlineData("token ")]
+        [InlineData("\"quoted string with \" quotes\"")]
+        [InlineData("\"quoted string with \"two\" quotes\"")]
+        public void Ctor_ValueInvalidFormat_ThrowFormatException(string input)
         {
-            // When adding values using strongly typed objects, no leading/trailing LWS (whitespaces) are allowed.
-            AssertFormatException("text", " token ");
-            AssertFormatException("text", "token ");
-            AssertFormatException("text", " token");
-            AssertFormatException("text", "\"quoted string with \" quotes\"");
-            AssertFormatException("text", "\"quoted string with \"two\" quotes\"");
+            Assert.Throws<FormatException>(() => new NameValueHeaderValue("text", input));
         }
 
-        [Fact]
-        public void Ctor_ValueValidFormat_SuccessfullyCreated()
+        [Theory]
+        [InlineData(null, null)]
+        [InlineData("", "")]
+        [InlineData("token_string", "token_string")]
+        [InlineData("spaced out string", "spaced out string")]
+        [InlineData("\"quoted\"", "quoted")]
+        [InlineData("\"quoted string with quoted \\\" quote-pair\"", "quoted string with quoted \\\" quote-pair")]
+        public void Ctor_ValueValidFormat_SuccessfullyCreated(string input, string expected)
         {
-            CheckValue(null);
-            CheckValue(string.Empty);
-            CheckValue("token_string");
-            CheckValue("unquoted string");
-            CheckValue("\"quoted string with quoted \\\" quote-pair\"");
+            var nameValue = new NameValueHeaderValue("text", input);
+            Assert.Equal(expected, nameValue.Value);
         }
 
         [Fact]
@@ -147,7 +149,7 @@ namespace Microsoft.Net.Http.Headers
         {
             // Just verify that the setter calls the same validation the ctor invokes.
             Assert.Throws<FormatException>(() => { var x = new NameValueHeaderValue("name"); x.Value = " x "; });
-            Assert.Throws<FormatException>(() => { var x = new NameValueHeaderValue("name"); x.Value = " x y "; });
+            Assert.Throws<FormatException>(() => { var x = new NameValueHeaderValue("name"); x.Value = " x\"y "; });
         }
 
         [Fact]

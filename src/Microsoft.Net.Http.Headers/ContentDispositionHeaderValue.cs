@@ -504,14 +504,14 @@ namespace Microsoft.Net.Http.Headers
             output = null;
             var processedInput = input;
             // Require quotes, min of "=?e?b??="
-            if (!IsQuoted(processedInput) || processedInput.Length < 10)
+            if (processedInput.Length < 8)
             {
                 return false;
             }
 
             var parts = processedInput.Split(QuestionMark).ToArray();
             // "=, encodingName, encodingType, encodedData, ="
-            if (parts.Length != 5 || parts[0] != "\"=" || parts[4] != "=\""
+            if (parts.Length != 5 || parts[0] != "=" || parts[4] != "="
                 || !parts[2].Equals("b", StringComparison.OrdinalIgnoreCase))
             {
                 // Not encoded.
