@@ -80,6 +80,7 @@ namespace Microsoft.AspNetCore.Http
         private readonly IOptionsFactory<TOptions> _factory;
         private readonly IEnumerable<IConfigureRequestOptions<TOptions>> _configures;
 
+        // TODO: This can't really use the factory directly, rather it would need to rationlize things, since post configures should run last...
         public RequestOptionsFactory(IOptionsFactory<TOptions> factory, IEnumerable<IConfigureRequestOptions<TOptions>> configures) {
             _factory = factory;
             _configures = configures;
